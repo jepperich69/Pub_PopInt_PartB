@@ -68,15 +68,20 @@ def best_entropy_integer(X, row_sums, col_sums):
             best_tbl, best_kl = T.copy(), val
     return best_tbl, best_kl
 
-def heatmap(ax, M, title):
-    im = ax.imshow(M, aspect='auto')
+def heatmap(ax, M, title, vmin=0.0, vmax=None):
+    # One colour scale per figure (vmin/vmax shared by the three panels), so
+    # equal counts get equal colours; white labels on the dark end of viridis.
+    im = ax.imshow(M, aspect='auto', vmin=vmin, vmax=vmax)
     ax.set_xticks(range(M.shape[1])); ax.set_xticklabels(['Low','Mid','High'])
     ax.set_yticks(range(M.shape[0])); ax.set_yticklabels(['Young','Old'])
     ax.set_title(title)
+    span = (vmax - vmin) if vmax is not None else 1.0
     for i in range(M.shape[0]):
         for j in range(M.shape[1]):
             txt = f"{M[i, j]:.1f}" if M.dtype == float else f"{int(M[i, j])}"
-            ax.text(j, i, txt, ha='center', va='center')
+            dark = vmax is not None and (M[i, j] - vmin) / span < 0.5
+            ax.text(j, i, txt, ha='center', va='center',
+                    color='white' if dark else 'black')
     return im
 
 def metrics_row(X, H, E, row_sums, col_sums):
@@ -145,17 +150,17 @@ for label, row_sums, col_sums in [("A (baseline margins)", row_A, col_A),
 
     # Figures
     fig, axes = plt.subplots(1, 3, figsize=(12, 3.6))
-    heatmap(axes[0], X, "Fractional IPF table X")
+    vmax = max(X.max(), H.max(), E.max())
+    heatmap(axes[0], X, "Fractional IPF table X", vmax=vmax)
     # deltas for Hamilton under this scenario
     row_delta = tuple((H.sum(axis=1) - row_sums).tolist())
     col_delta = tuple((H.sum(axis=0) - col_sums).tolist())
-    heatmap(axes[1], H, f"Hamilton (grand total)\nrowΔ={row_delta}, colΔ={col_delta}")
-    heatmap(axes[2], E, "Entropy-optimal (min KL)\nMargins exact")
+    heatmap(axes[1], H, f"Hamilton (grand total)\nrowΔ={row_delta}, colΔ={col_delta}", vmax=vmax)
+    heatmap(axes[2], E, "Entropy-optimal (min KL)\nMargins exact", vmax=vmax)
     fig.suptitle(label)
     plt.tight_layout()
     fig.savefig(OUTDIR / f"toy_entropy_vs_hamilton_{label.split()[0]}.png", dpi=DPI)
 
-plt.show()
 
 metrics_df = pd.DataFrame(results, columns=[
     "Scenario",
@@ -191,15 +196,15 @@ print("Entropy rare cell >=1?:", bool(E_has_rare))
 
 # Figures for risk scenario
 figC, axesC = plt.subplots(1, 3, figsize=(12, 3.6))
-heatmap(axesC[0], X_risk, "Fractional IPF table (risk)")
+vmaxC = max(X_risk.max(), H_risk.max(), E_risk.max())
+heatmap(axesC[0], X_risk, "Fractional IPF table (risk)", vmax=vmaxC)
 row_deltaC = tuple((H_risk.sum(axis=1) - row_R).tolist())
 col_deltaC = tuple((H_risk.sum(axis=0) - col_R).tolist())
-heatmap(axesC[1], H_risk, f"Hamilton (grand total)\nrowΔ={row_deltaC}, colΔ={col_deltaC}")
-heatmap(axesC[2], E_risk, "Entropy-optimal (min KL)\nMargins exact")
+heatmap(axesC[1], H_risk, f"Hamilton (grand total)\nrowΔ={row_deltaC}, colΔ={col_deltaC}", vmax=vmaxC)
+heatmap(axesC[2], E_risk, "Entropy-optimal (min KL)\nMargins exact", vmax=vmaxC)
 figC.suptitle("C (small cell at risk)")
 plt.tight_layout()
 figC.savefig(OUTDIR / "toy_small_cell_risk.png", dpi=DPI)
-plt.show()
 
 # ---------- Entropy-informed randomized rounding around the risk scenario ----------
 samples, probs, cov, feas = sample_entropy_weighted(
@@ -221,7 +226,6 @@ for i in range(2):
         ax_cov.text(j, i, f"{coverage.values[i,j]:.2f}", ha='center', va='center')
 plt.tight_layout()
 fig_cov.savefig(OUTDIR / "toy_entropy_coverage.png", dpi=DPI)
-plt.show()
 
 # Save sample frequency of the rare cell specifically
 rare_freq = float(coverage.values[rare_cell])
