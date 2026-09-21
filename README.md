@@ -56,6 +56,7 @@ on that seed and integerize it. The fractional table has 634,956 cells and 5,932
 | Table 3 (benchmark of integerization methods) | `table3` | `analysis/table3_benchmark.py` | `output/table3/summary.csv` |
 | Section 3.2, floor-ceiling gap paragraph | `kl_gap` | `analysis/kl_gap.py` | `output/kl_gap/summary.txt`, `per_zone.csv` |
 | Table 2 first row (theta upper bound) and Sec. 3.2 bound paragraph | `theta_bound` | `analysis/theta_bound.py` | `output/theta_bound/summary.txt`, `theta_bound_by_zone.csv` |
+| Introduction and takeaway (ii): misallocated persons (345,000 vs 53,000) | `misallocated` | `analysis/misallocated_persons.py` | `output/misallocated_persons.txt` |
 | Table 4 (dimensionality experiment) | `table4` | `analysis/table4_dimensionality.py` | `output/table4/table4_unweighted.csv` |
 
 Figure 4 (controlled and descriptive attributes) is a TikZ drawing in the manuscript.

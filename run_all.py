@@ -40,6 +40,8 @@ STAGES = [
      "Figure 4 theta violins and the Table 2 statistics", {}),
     ("theta_bound", "analysis/theta_bound.py",
      "Table 2 first row: upper bound on theta per zone", {}),
+    ("misallocated", "analysis/misallocated_persons.py",
+     "Introduction and takeaway (ii): misallocated persons", {}),
     ("kl_gap", "analysis/kl_gap.py",
      "Sections 2.4 and 3.2: exact KL optimum and floor-ceiling gaps", {"QUICK_ARGS": "10"}),
     ("counterexample", "analysis/floor_ceiling_counterexample.py",
