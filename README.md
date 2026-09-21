@@ -49,7 +49,7 @@ on that seed and integerize it. The fractional table has 634,956 cells and 5,932
 | Minimal allocation (floor + largest remainder) | `step3` | `pipeline/step3_integerize.py` | `output/integer_table.csv` |
 | Swap-repaired table (the paper's method) | `step3` | `pipeline/step3_integerize.py` | `output/integer_repaired.csv` |
 | Seeded slice sampling (Table 3 row) | `step2` | `pipeline/step2_seeded_pps.py` | `output/tmp_Minimal_Integerized.csv` |
-| Figures 1, 2, 3 (toy examples A, B, C) | `toy` | `analysis/toy_examples.py` | `output/figures/toy_entropy_vs_hamilton_A.png`, `..._B.png`, `toy_small_cell_risk.png` |
+| Figures 2 and 3 (toy examples A and C; B was dropped in R1) | `toy` | `analysis/toy_examples.py` | `output/figures/toy_entropy_vs_hamilton_A.png`, `toy_small_cell_risk.png` |
 | Section 2.4 counterexample | `counterexample` | `analysis/floor_ceiling_counterexample.py` | `output/counterexample/SUMMARY.md` |
 | Table 1 (error vs. fractional baseline, 20 largest zones) | `table1` | `analysis/table1_error_vs_fractional.py` | `output/table1/table1.csv` |
 | Table 2 (aggregated overlap) and Figure 5 (theta violins) | `fig5` | `analysis/fig5_theta_violin.py` | `output/fig5.log`, `output/figures/fig5_overlap_theta_violin.png` |

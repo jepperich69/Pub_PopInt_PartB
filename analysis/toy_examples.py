@@ -155,8 +155,8 @@ for label, row_sums, col_sums in [("A (baseline margins)", row_A, col_A),
     # deltas for Hamilton under this scenario
     row_delta = tuple((H.sum(axis=1) - row_sums).tolist())
     col_delta = tuple((H.sum(axis=0) - col_sums).tolist())
-    heatmap(axes[1], H, f"Hamilton (grand total)\nrowΔ={row_delta}, colΔ={col_delta}", vmax=vmax)
-    heatmap(axes[2], E, "Entropy-optimal (min KL)\nMargins exact", vmax=vmax)
+    heatmap(axes[1], H, f"Hamilton (grand total only)\nmargin error: rows {row_delta}, cols {col_delta}", vmax=vmax)
+    heatmap(axes[2], E, "KL optimum, Eq. (2)\nmargin error: 0", vmax=vmax)
     fig.suptitle(label)
     plt.tight_layout()
     fig.savefig(OUTDIR / f"toy_entropy_vs_hamilton_{label.split()[0]}.png", dpi=DPI)
@@ -174,11 +174,13 @@ print(metrics_df.to_string(index=False))
 
 # ---------- Scenario 3: Small cell at risk ----------
 # Construct a fractional table with a very small (rare) cell in Young–Low
-X_risk = np.array([[0.2, 2.6, 1.2],
-                   [0.8, 1.4, 3.8]], dtype=float)
+# Paper's Fig. 3 table: rare Young-Low cell of 0.4; margins are the row and
+# column sums (4, 6) and (2, 4, 4), so no re-fit is involved.
+X_risk = np.array([[0.4, 2.3, 1.3],
+                   [1.6, 1.7, 2.7]], dtype=float)
 N_risk = int(round(X_risk.sum()))
-row_R = X_risk.sum(axis=1).round().astype(int)   # [4,6]
-col_R = X_risk.sum(axis=0).round().astype(int)   # [1,4,5]
+row_R = X_risk.sum(axis=1).round().astype(int)   # [4, 6]
+col_R = X_risk.sum(axis=0).round().astype(int)   # [2, 4, 4]
 
 # Deterministic solutions
 H_risk = hamilton_round(X_risk)
@@ -200,8 +202,8 @@ vmaxC = max(X_risk.max(), H_risk.max(), E_risk.max())
 heatmap(axesC[0], X_risk, "Fractional IPF table (risk)", vmax=vmaxC)
 row_deltaC = tuple((H_risk.sum(axis=1) - row_R).tolist())
 col_deltaC = tuple((H_risk.sum(axis=0) - col_R).tolist())
-heatmap(axesC[1], H_risk, f"Hamilton (grand total)\nrowΔ={row_deltaC}, colΔ={col_deltaC}", vmax=vmaxC)
-heatmap(axesC[2], E_risk, "Entropy-optimal (min KL)\nMargins exact", vmax=vmaxC)
+heatmap(axesC[1], H_risk, f"Hamilton (grand total only)\nmargin error: rows {row_deltaC}, cols {col_deltaC}", vmax=vmaxC)
+heatmap(axesC[2], E_risk, "KL optimum, Eq. (2)\nmargin error: 0", vmax=vmaxC)
 figC.suptitle("C (small cell at risk)")
 plt.tight_layout()
 figC.savefig(OUTDIR / "toy_small_cell_risk.png", dpi=DPI)
