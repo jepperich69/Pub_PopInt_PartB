@@ -52,9 +52,10 @@ on that seed and integerize it. The fractional table has 634,956 cells and 5,932
 | Figures 2 and 3 (toy examples A and C; B was dropped in R1) | `toy` | `analysis/toy_examples.py` | `output/figures/toy_entropy_vs_hamilton_A.png`, `toy_small_cell_risk.png` |
 | Section 2.4 counterexample | `counterexample` | `analysis/floor_ceiling_counterexample.py` | `output/counterexample/SUMMARY.md` |
 | Table 1 (error vs. fractional baseline, 20 largest zones) | `table1` | `analysis/table1_error_vs_fractional.py` | `output/table1/table1.csv` |
-| Table 2 (aggregated overlap) and Figure 5 (theta violins) | `fig5` | `analysis/fig5_theta_violin.py` | `output/fig5.log`, `output/figures/fig5_overlap_theta_violin.png` |
+| Table 2 (aggregated overlap) and Figure 4 (theta violins; Figure 5 before R1 dropped toy example B) | `fig5` | `analysis/fig5_theta_violin.py` | `output/fig5.log`, `output/figures/fig5_overlap_theta_violin.png` |
 | Table 3 (benchmark of integerization methods) | `table3` | `analysis/table3_benchmark.py` | `output/table3/summary.csv` |
 | Section 3.2, floor-ceiling gap paragraph | `kl_gap` | `analysis/kl_gap.py` | `output/kl_gap/summary.txt`, `per_zone.csv` |
+| Table 2 first row (theta upper bound) and Sec. 3.2 bound paragraph | `theta_bound` | `analysis/theta_bound.py` | `output/theta_bound/summary.txt`, `theta_bound_by_zone.csv` |
 | Table 4 (dimensionality experiment) | `table4` | `analysis/table4_dimensionality.py` | `output/table4/table4_unweighted.csv` |
 
 Figure 4 (controlled and descriptive attributes) is a TikZ drawing in the manuscript.
