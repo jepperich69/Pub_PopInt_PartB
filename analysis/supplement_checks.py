@@ -1,6 +1,6 @@
 """Numerical checks quoted in the Mathematical Supplement (Sections S2-S6).
 
-A. log L = -N D_KL(q||p) + C(N, xhat) exactly (Eq. S.5 of the supplement).
+A. log L = -N D_KL(q||p) + C(N, xhat) exactly (Eq. S.6 of the supplement).
 B. Method-of-types bounds on small tables; the type class of q is the most probable
    type class under q (Cover and Thomas 2006, Thm 11.1.4 and its lemma).
 C. Expansions among near tables: gamma_k - 1 = (1-2r)/(2x) + O(1/x^2),
