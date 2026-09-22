@@ -57,12 +57,14 @@ on that seed and integerize it. The fractional table has 634,956 cells and 5,932
 | Section 3.2, floor-ceiling gap paragraph | `kl_gap` | `analysis/kl_gap.py` | `output/kl_gap/summary.txt`, `per_zone.csv` |
 | Table 2 first row (theta upper bound) and Sec. 3.2 bound paragraph | `theta_bound` | `analysis/theta_bound.py` | `output/theta_bound/summary.txt`, `theta_bound_by_zone.csv` |
 | Introduction and takeaway (ii): misallocated persons (345,000 vs 53,000) | `misallocated` | `analysis/misallocated_persons.py` | `output/misallocated_persons.txt` |
+| Mathematical Supplement, Sections S2-S6 (identity, type-class bounds, expansions, worked examples, projection, Danish-table quantities) | `supplement` | `analysis/supplement_checks.py` | `output/supplement/summary.txt` |
+| Mathematical Supplement, Section S3 (KL vs most probable table, disagreement rate by N) | `kl_vs_ml` | `analysis/kl_vs_ml_ranking.py` | `output/supplement/kl_vs_ml_ranking.txt` |
 | Table 4 (dimensionality experiment) | `table4` | `analysis/table4_dimensionality.py` | `output/table4/table4_unweighted.csv` |
 
 Figure 4 (controlled and descriptive attributes) is a TikZ drawing in the manuscript.
 
 Stage order matters: `step1 -> step2 -> step3 -> table3 -> table1 -> fig5`; `kl_gap`,
-`counterexample`, `toy` and `table4` need `step3` only. `run_all.py` keeps this order.
+`counterexample`, `toy`, `supplement` and `table4` need `step3` only; `kl_vs_ml` needs nothing. `run_all.py` keeps this order.
 
 ## Expected results
 
@@ -82,6 +84,9 @@ changes the draw sequence.
 | Optimum leaves the floor-ceiling class | 95 of 98 zones, 658 units, 434 cells below floor, 207 above ceiling | `output/kl_gap/summary.txt` |
 | Table 4, floor share at k = 0 ... 4 | 0.95, 0.87, 0.73, 0.53, 0.31 | `output/table4/table4_unweighted.csv` |
 | Table 4, theta_B direct at k = 4 / aggregate-first | 0.821 / 0.984 | `output/table4/table4_unweighted.csv` |
+| Supplement S2: N D_KL / C(N, xhat) / crude bound, nats | 3.80e4 / -4.73e5 / -9.90e6 | `output/supplement/summary.txt` |
+| Supplement S4: cells with empty floor / share of R placed there | 65.7% (417,164) / 36.7% (64,228 of 174,966) | `output/supplement/summary.txt` |
+| Supplement S3: KL vs likelihood disagreement, N = 10 / 100 ... 100,000 | 70% / 59-61% | `output/supplement/kl_vs_ml_ranking.txt` |
 
 In `table4_unweighted.csv` the method `hier` is the paper's *aggregate-first* procedure and
 `multi` is multinomial sampling. The script also runs `hybrid` (deterministic block totals,
