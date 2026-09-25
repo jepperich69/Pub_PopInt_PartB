@@ -56,3 +56,6 @@ fig.tight_layout()
 out = FIG / "fig5_overlap_theta_violin.png"
 fig.savefig(out)
 print("wrote", out)
+out_pdf = out.with_suffix(".pdf")
+fig.savefig(out_pdf)
+print("wrote", out_pdf)

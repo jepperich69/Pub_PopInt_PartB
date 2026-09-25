@@ -37,7 +37,7 @@ STAGES = [
     ("table1", "analysis/table1_error_vs_fractional.py",
      "Table 1 error relative to the fractional baseline (20 largest zones)", {}),
     ("fig5", "analysis/fig5_theta_violin.py",
-     "Figure 4 theta violins and the Table 2 statistics", {}),
+     "Figure 5 theta violins and the Table 2 statistics", {}),
     ("theta_bound", "analysis/theta_bound.py",
      "Table 2 first row: upper bound on theta per zone", {}),
     ("misallocated", "analysis/misallocated_persons.py",

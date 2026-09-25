@@ -49,10 +49,10 @@ on that seed and integerize it. The fractional table has 634,956 cells and 5,932
 | Minimal allocation (floor + largest remainder) | `step3` | `pipeline/step3_integerize.py` | `output/integer_table.csv` |
 | Swap-repaired table (the paper's method) | `step3` | `pipeline/step3_integerize.py` | `output/integer_repaired.csv` |
 | Seeded slice sampling (Table 3 row) | `step2` | `pipeline/step2_seeded_pps.py` | `output/tmp_Minimal_Integerized.csv` |
-| Figures 2 and 3 (toy examples A and C; B was dropped in R1) | `toy` | `analysis/toy_examples.py` | `output/figures/toy_entropy_vs_hamilton_A.png`, `toy_small_cell_risk.png` |
+| Figures 3 and 4 (toy examples A and C; B was dropped in R1) | `toy` | `analysis/toy_examples.py` | `output/figures/toy_entropy_vs_hamilton_A.png`, `toy_small_cell_risk.png` |
 | Section 2.4 counterexample | `counterexample` | `analysis/floor_ceiling_counterexample.py` | `output/counterexample/SUMMARY.md` |
 | Table 1 (error vs. fractional baseline, 20 largest zones) | `table1` | `analysis/table1_error_vs_fractional.py` | `output/table1/table1.csv` |
-| Table 2 (aggregated overlap) and Figure 4 (theta violins; Figure 5 before R1 dropped toy example B) | `fig5` | `analysis/fig5_theta_violin.py` | `output/fig5.log`, `output/figures/fig5_overlap_theta_violin.png` |
+| Table 2 (aggregated overlap) and Figure 5 (theta violins) | `fig5` | `analysis/fig5_theta_violin.py` | `output/fig5.log`, `output/figures/fig5_overlap_theta_violin.png` |
 | Table 3 (benchmark of integerization methods) | `table3` | `analysis/table3_benchmark.py` | `output/table3/summary.csv` |
 | Section 3.2, floor-ceiling gap paragraph | `kl_gap` | `analysis/kl_gap.py` | `output/kl_gap/summary.txt`, `per_zone.csv` |
 | Table 2 first row (theta upper bound) and Sec. 3.2 bound paragraph | `theta_bound` | `analysis/theta_bound.py` | `output/theta_bound/summary.txt`, `theta_bound_by_zone.csv` |
@@ -61,7 +61,7 @@ on that seed and integerize it. The fractional table has 634,956 cells and 5,932
 | Mathematical Supplement, Section S3 (KL vs most probable table, disagreement rate by N) | `kl_vs_ml` | `analysis/kl_vs_ml_ranking.py` | `output/supplement/kl_vs_ml_ranking.txt` |
 | Table 4 (dimensionality experiment) | `table4` | `analysis/table4_dimensionality.py` | `output/table4/table4_unweighted.csv` |
 
-Figure 4 (controlled and descriptive attributes) is a TikZ drawing in the manuscript.
+Figure 1 (the pipeline) and Figure 2 (controlled and descriptive attributes) are TikZ drawings in the manuscript.
 
 Stage order matters: `step1 -> step2 -> step3 -> table3 -> table1 -> fig5`; `kl_gap`,
 `counterexample`, `toy`, `supplement` and `table4` need `step3` only; `kl_vs_ml` needs nothing. `run_all.py` keeps this order.
@@ -99,8 +99,15 @@ data/        five target-margin files (inputs)
 pipeline/    step1_generate_seed.py, step2_seeded_pps.py, step3_integerize.py
 analysis/    one script per table, figure or reported number
 run_all.py   runner
+poster/      A0 conference poster (poster_portrait.pdf) and its LaTeX source
 output/      everything generated (gitignored)
 ```
+
+The poster summarizes the paper on one A0 page (841 x 1189 mm). Its numbers are taken from
+the tables above; figure and table references point to the paper. To rebuild it, run
+`latexmk -pdf poster_portrait.tex` in `poster/`. It needs the `lato`, `qrcode` and
+`tcolorbox` packages. The flow chart is `system_pipeline_vertical.tex`, compiled separately
+to `figs/system_pipeline_vertical.pdf`.
 
 The pipeline scripts are the ones used for the paper, with their paths made relative to
 the repository. `step3_integerize.py` is the paper's method: IPF fit, floor, largest-remainder

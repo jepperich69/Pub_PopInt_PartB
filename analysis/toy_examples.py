@@ -3,8 +3,8 @@ Integerization demo: Hamilton (largest remainders) vs Entropy (min-KL with exact
 + 'Small cell at risk' scenario
 + Entropy-informed randomized rounding with coverage over replicates
 
-Produces the toy figures of Section 2: Figure 1 = toy_entropy_vs_hamilton_A.png,
-Figure 2 = toy_entropy_vs_hamilton_B.png, Figure 3 = toy_small_cell_risk.png, all in
+Produces the toy figures of Section 3.1: Figure 3 = toy_entropy_vs_hamilton_A.png and
+Figure 4 = toy_small_cell_risk.png (toy example B, dropped in R1, is still drawn), all in
 output/figures/, plus toy_metrics_A_B.csv.
 """
 
@@ -160,6 +160,7 @@ for label, row_sums, col_sums in [("A (baseline margins)", row_A, col_A),
     fig.suptitle(label)
     plt.tight_layout()
     fig.savefig(OUTDIR / f"toy_entropy_vs_hamilton_{label.split()[0]}.png", dpi=DPI)
+    fig.savefig(OUTDIR / f"toy_entropy_vs_hamilton_{label.split()[0]}.pdf")
 
 
 metrics_df = pd.DataFrame(results, columns=[
@@ -174,7 +175,7 @@ print(metrics_df.to_string(index=False))
 
 # ---------- Scenario 3: Small cell at risk ----------
 # Construct a fractional table with a very small (rare) cell in Young–Low
-# Paper's Fig. 3 table: rare Young-Low cell of 0.4; margins are the row and
+# Paper's Fig. 4 table: rare Young-Low cell of 0.4; margins are the row and
 # column sums (4, 6) and (2, 4, 4), so no re-fit is involved.
 X_risk = np.array([[0.4, 2.3, 1.3],
                    [1.6, 1.7, 2.7]], dtype=float)
@@ -207,6 +208,7 @@ heatmap(axesC[2], E_risk, "KL optimum, Eq. (2)\nmargin error: 0", vmax=vmaxC)
 figC.suptitle("C (small cell at risk)")
 plt.tight_layout()
 figC.savefig(OUTDIR / "toy_small_cell_risk.png", dpi=DPI)
+figC.savefig(OUTDIR / "toy_small_cell_risk.pdf")
 
 # ---------- Entropy-informed randomized rounding around the risk scenario ----------
 samples, probs, cov, feas = sample_entropy_weighted(
