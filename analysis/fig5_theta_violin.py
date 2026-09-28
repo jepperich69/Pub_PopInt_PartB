@@ -48,10 +48,13 @@ stats(samp_med, "sampled (per-zone median)")
 fig, ax = plt.subplots(figsize=(7.5, 4.2), dpi=200)
 data = [det_rep.loc[zones].to_numpy(), det_min.loc[zones].to_numpy(), samp_med.loc[zones].to_numpy()]
 ax.violinplot(data, showmeans=True, showmedians=False, showextrema=True)
+for i, v in enumerate(data, start=1):   # label the mean bar (unweighted zone mean)
+    ax.text(i + 0.2, v.mean(), f"mean {v.mean():.3f}", va="center", ha="left", fontsize=9)
+ax.set_xlim(0.5, 3.8)                   # room for the right-hand label
 ax.set_xticks([1, 2, 3])
 ax.set_xticklabels(["Integerized θ", "Minimal θ", "Sampled θ (median)"])
 ax.set_ylabel("Overlap θ = Σ min(p, q)")
-ax.set_title("Share of Population Allocated ‘Information-Theoretically Correct’")
+# no in-figure title: the caption carries the description (R1B build step 71)
 fig.tight_layout()
 out = FIG / "fig5_overlap_theta_violin.png"
 fig.savefig(out)

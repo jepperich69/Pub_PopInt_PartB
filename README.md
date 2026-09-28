@@ -78,7 +78,8 @@ changes the draw sequence.
 | theta, swap-repaired / minimal / multinomial (unweighted zone means) | 0.984 / 0.985 / 0.921 | `output/table3/summary.csv`, column `theta_mean` |
 | Secondary-margin L1, repaired / minimal (% of population) | 1.39 / 1.62 | `output/table3/summary.csv`, column `sec_pct` |
 | Sub-unit mass retained, repaired / multinomial | 0.92 / 1.00 | `output/table3/summary.csv`, column `sub_ratio` |
-| Table 1, repaired L2 / KL | 20.4 / 0.0036 | `output/table1/table1.csv` |
+| Table 1, SRMSE repaired / minimal / sampling mean (5th-95th) | 0.0164 / 0.0161 / 0.2551 (0.2378-0.2742) | `output/table1/table1.csv`, `*_SRMSE` |
+| Table 1, KL repaired / minimal / sampling mean | 0.0036 / 0.0035 / 0.0230 | `output/table1/table1.csv`, `*_KLqp` |
 | Best floor-ceiling table above the unrestricted optimum | 3.2e-5 (worst zone 1.3e-4) | `output/kl_gap/summary.txt` |
 | Largest-remainder / swap-repaired table above the optimum | 3.6% / 6.6% | `output/kl_gap/summary.txt` |
 | Optimum leaves the floor-ceiling class | 95 of 98 zones, 658 units, 434 cells below floor, 207 above ceiling | `output/kl_gap/summary.txt` |

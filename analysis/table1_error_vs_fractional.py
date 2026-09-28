@@ -13,7 +13,8 @@ Two corrections to the submitted table.
 Zones: the 20 in output/tmp_VariationBaseline_Summary.csv (largest by population, written by step3).
 Sampling: multinomial, R = 200 per zone, seed 42, zone total = repaired total.
 Output: output/table1/table1.csv and per_zone.csv. Paper Table 1 = rows repaired / minimal_det /
-sampling with the L2 and KLqp columns.
+sampling with the SRMSE and KLqp columns (SRMSE over cells with x > 0; the fractional
+table stores only those, so SRMSE and SRMSEall coincide). L2 is kept for the record.
 """
 from pathlib import Path
 import numpy as np
@@ -41,6 +42,14 @@ def kl_qp(n, x):
     return float(np.sum(q[m] * np.log(q[m] / p[m])))
 
 
+def srmse(n, x, support):
+    """Standardized RMSE, RMSE over the cells in `support` divided by their mean count.
+    Equals sqrt(K) * ||n - x|| / N when all nonzero errors lie in `support`."""
+    K = int(support.sum())
+    e = n[support] - x[support]
+    return float(np.sqrt(np.mean(e ** 2)) / (x[support].sum() / K))
+
+
 def kl_pq_clipped(p, q, eps=1e-12):  # the pipeline's convention, for the record
     p = np.clip(p / p.sum(), eps, 1.0)
     q = np.clip(q / max(q.sum(), eps), eps, 1.0)
@@ -53,20 +62,27 @@ for z in zones:
     g = d[d.ZoneID == z]
     x = g.x.to_numpy(float)
     p = x / x.sum()
-    row = {"ZoneID": z, "N": int(round(g.repaired.sum()))}
+    pos = x > 0                          # SRMSE support: cells with x_k > 0
+    allc = np.ones_like(pos)             # alternative: all cells of the zone
+    row = {"ZoneID": z, "N": int(round(g.repaired.sum())), "K_pos": int(pos.sum()), "K_all": len(x)}
     for name in tabs:
         n = g[name].to_numpy(float)
         row[f"{name}_L2"] = float(np.linalg.norm(n - x))
+        row[f"{name}_SRMSE"] = srmse(n, x, pos)
+        row[f"{name}_SRMSEall"] = srmse(n, x, allc)
         row[f"{name}_KLqp"] = kl_qp(n, x)
         row[f"{name}_KLpq_clipped"] = kl_pq_clipped(p, n / n.sum())
     T = row["N"]
-    l2, kq, kp = [], [], []
+    l2, sr, sra, kq, kp = [], [], [], [], []
     for _ in range(200):
         ns = rng.multinomial(T, p).astype(float)
         l2.append(np.linalg.norm(ns - x))
+        sr.append(srmse(ns, x, pos))
+        sra.append(srmse(ns, x, allc))
         kq.append(kl_qp(ns, x))
         kp.append(kl_pq_clipped(p, ns / T))
-    for arr, lab in [(np.array(l2), "L2"), (np.array(kq), "KLqp"), (np.array(kp), "KLpq_clipped")]:
+    for arr, lab in [(np.array(l2), "L2"), (np.array(sr), "SRMSE"), (np.array(sra), "SRMSEall"),
+                     (np.array(kq), "KLqp"), (np.array(kp), "KLpq_clipped")]:
         row[f"samp_{lab}_mean"] = arr.mean()
         row[f"samp_{lab}_p05"] = np.percentile(arr, 5)
         row[f"samp_{lab}_p95"] = np.percentile(arr, 95)
